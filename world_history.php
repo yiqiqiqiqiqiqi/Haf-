@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// Default language is English
 if (!isset($_SESSION['lang'])) {
     $_SESSION['lang'] = 'en';
 }
