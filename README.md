@@ -78,9 +78,11 @@ Visit `http://localhost/hsbm/index.php`:
 
 • Start WAMP; ensure the tray icon is green.
 
-**2. Place Files:**
+2. Place Files:
 
-• Copy the `hsbm` folder (with `index.php`, `images`, and `sql/haf_db.sql`) to `C:\wamp64\www`.
+⁕Copy the hsbm folder (containing index.php, images, and sql/haf_db.sql) to C:\wamp64\www.
+
+⁕⚠️ Important: If the folder name is not hsbm, rename it to hsbm before placing it into C:\wamp64\www.
 
 **3. Set Up Database:**
 
@@ -181,9 +183,11 @@ Visit `http://localhost/hsbm/index.php`:
 
 • 启动 WAMP，托盘图标应为绿色。
 
-**2. 放置文件：**
+2. 放置文件：
 
-• 将 `hsbm` 文件夹（含 `index.php`, `images`, `sql/haf_db.sql`）复制到 `C:\wamp64\www`。
+⁕将 hsbm 文件夹（含 index.php、images 和 sql/haf_db.sql）复制到 C:\wamp64\www。
+
+⁕⚠️ 重要：下载后若文件夹名称不是 hsbm，请先将其重命名为 hsbm，再放入 C:\wamp64\www。
 
 **3. 设置数据库：**
 
@@ -287,9 +291,11 @@ Lawati `http://localhost/hsbm/index.php`:
 
 • Mulakan WAMP dan pastikan ikon dulang berwarna hijau.
 
-**2. Letakkan Fail:**
+2. Letakkan Fail:
 
-• Salin folder `hsbm` (mengandungi `index.php`, `images`, dan `sql/haf_db.sql`) ke `C:\wamp64\www`.
+⁕Salin folder hsbm (mengandungi index.php, images, dan sql/haf_db.sql) ke C:\wamp64\www.
+
+⁕⚠️ Penting: Jika nama folder bukan hsbm, namakan semula folder kepada hsbm sebelum meletakkannya ke dalam C:\wamp64\www.
 
 **3. Sediakan Pangkalan Data:**
 
