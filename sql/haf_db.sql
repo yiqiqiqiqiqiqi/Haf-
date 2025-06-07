@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1:3306
--- Generation Time: Jun 06, 2025 at 05:56 PM
+-- Host: 127.0.0.1
+-- Generation Time: Jun 07, 2025 at 10:33 AM
 -- Server version: 9.1.0
--- PHP Version: 8.3.14
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -27,19 +27,16 @@ SET time_zone = "+00:00";
 -- Table structure for table `addresses`
 --
 
-DROP TABLE IF EXISTS `addresses`;
-CREATE TABLE IF NOT EXISTS `addresses` (
-  `id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `addresses` (
+  `id` int NOT NULL,
   `user_id` int NOT NULL,
   `full_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `house_number` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `city` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `state` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `postal_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `addresses`
@@ -57,13 +54,10 @@ INSERT INTO `addresses` (`id`, `user_id`, `full_name`, `house_number`, `city`, `
 -- Table structure for table `cart`
 --
 
-DROP TABLE IF EXISTS `cart`;
-CREATE TABLE IF NOT EXISTS `cart` (
+CREATE TABLE `cart` (
   `user_id` int NOT NULL,
   `product_id` int NOT NULL,
-  `quantity` int NOT NULL,
-  PRIMARY KEY (`user_id`,`product_id`),
-  KEY `product_id` (`product_id`)
+  `quantity` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -71,7 +65,8 @@ CREATE TABLE IF NOT EXISTS `cart` (
 --
 
 INSERT INTO `cart` (`user_id`, `product_id`, `quantity`) VALUES
-(1, 11, 1);
+(1, 11, 1),
+(2, 18, 1);
 
 -- --------------------------------------------------------
 
@@ -79,16 +74,13 @@ INSERT INTO `cart` (`user_id`, `product_id`, `quantity`) VALUES
 -- Table structure for table `logs`
 --
 
-DROP TABLE IF EXISTS `logs`;
-CREATE TABLE IF NOT EXISTS `logs` (
-  `id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `logs` (
+  `id` int NOT NULL,
   `user_id` int DEFAULT NULL,
   `action` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `details` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=777 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `logs`
@@ -871,7 +863,55 @@ INSERT INTO `logs` (`id`, `user_id`, `action`, `details`, `created_at`) VALUES
 (773, 6, 'view_products', '{\"page\":1,\"search\":\"\",\"category\":\"\",\"sort\":\"name_asc\"}', '2025-06-06 17:50:36'),
 (774, 6, 'view_products', '{\"page\":1,\"search\":\"\",\"category\":\"\",\"sort\":\"name_asc\"}', '2025-06-06 17:50:40'),
 (775, 6, 'add_to_cart', '{\"product_id\":14,\"quantity\":1}', '2025-06-06 17:50:40'),
-(776, 6, 'logout', 'User logged out', '2025-06-06 17:51:15');
+(776, 6, 'logout', 'User logged out', '2025-06-06 17:51:15'),
+(777, 1, 'login', 'User logged in successfully', '2025-06-07 04:58:41'),
+(778, 1, 'view_products', '{\"page\":1,\"search\":\"\",\"category\":\"\",\"sort\":\"name_asc\"}', '2025-06-07 04:58:41'),
+(779, 1, 'view_products', '{\"page\":1,\"search\":\"\",\"category\":\"\",\"sort\":\"name_asc\"}', '2025-06-07 05:14:22'),
+(780, 1, 'view_products', '{\"page\":1,\"search\":\"\",\"category\":\"\",\"sort\":\"name_asc\"}', '2025-06-07 07:06:09'),
+(781, 1, 'view_products', '{\"page\":1,\"search\":\"\",\"category\":\"\",\"sort\":\"name_asc\"}', '2025-06-07 07:06:12'),
+(782, 1, 'view_products', '{\"page\":1,\"search\":\"\",\"category\":\"\",\"sort\":\"name_asc\"}', '2025-06-07 07:06:17'),
+(783, 1, 'view_products', '{\"page\":1,\"search\":\"\",\"category\":\"\",\"sort\":\"name_asc\"}', '2025-06-07 07:06:19'),
+(784, 1, 'view_products', '{\"page\":1,\"search\":\"\",\"category\":\"\",\"sort\":\"name_asc\"}', '2025-06-07 07:06:21'),
+(785, 1, 'view_products', '{\"page\":1,\"search\":\"\",\"category\":\"\",\"sort\":\"name_asc\"}', '2025-06-07 07:06:23'),
+(786, 1, 'add_product', '{\"name_zh\":\"Haf \\u88c5\\u9970\\u7eb8\\u5e26\",\"category\":\"Bag\",\"stock\":100}', '2025-06-07 07:13:37'),
+(787, 1, 'view_products', '{\"page\":1,\"search\":\"\",\"category\":\"\",\"sort\":\"name_asc\"}', '2025-06-07 07:13:40'),
+(788, 1, 'add_product', '{\"name_zh\":\"Haf \\u88c5\\u9970\\u7eb8\\u5e26\",\"category\":\"Bag\",\"stock\":100}', '2025-06-07 07:13:45'),
+(789, 1, 'add_product', '{\"name_zh\":\"Haf \\u6c34\\u7f50\",\"category\":\"Bottle \",\"stock\":100}', '2025-06-07 07:54:45'),
+(790, 1, 'view_products', '{\"page\":1,\"search\":\"\",\"category\":\"\",\"sort\":\"name_asc\"}', '2025-06-07 07:57:48'),
+(791, 1, 'view_wishlist', '{\"product_count\":1}', '2025-06-07 07:58:06'),
+(792, 1, 'view_products', '{\"page\":1,\"search\":\"\",\"category\":\"\",\"sort\":\"name_asc\"}', '2025-06-07 07:58:13'),
+(793, 1, 'add_product', '{\"name_zh\":\"Haf \\u8bb0\\u4e8b\\u672c   \\u7528 Haf \\u8bb0\\u4e8b\\u672c\\u8bb0\\u5f55\\u7075\\u611f\\u4e0e\\u751f\\u6d3b\\u70b9\\u6ef4\\uff0c\\u7b80\\u7ea6\\u5c01\\u9762\\u8bbe\\u8ba1\\u642d\\u914d\\u5185\\u9875\\u7ec6\\u81f4\\u6392\\u7248\\uff0c\\u662f\\u5b66\\u4e60\\u4e0e\\u521b\\u610f\\u5de5\\u4f5c\\u7684\\u597d\\u5e2e\\u624b\\u3002 Minimalist and functional, the Haf Notes help you capture ideas anywhere. Buku nota bergaya Haf untuk mencatat inspirasi dan perancangan harian anda.\",\"category\":\"Book\",\"stock\":100}', '2025-06-07 08:01:32'),
+(794, 1, 'add_product', '{\"name_zh\":\"Haf \\u73af\\u4fdd\\u888b \",\"category\":\"Bag\",\"stock\":100}', '2025-06-07 08:03:29'),
+(795, 1, 'add_product', '{\"name_zh\":\"Haf \\u9999\\u6c1b\\u8721\\u70db \",\"category\":\"Candle\",\"stock\":100}', '2025-06-07 08:05:12'),
+(796, 1, 'add_product', '{\"name_zh\":\"Haf \\u8212\\u9002\\u62b1\\u6795\",\"category\":\"Pillow\",\"stock\":100}', '2025-06-07 08:07:17'),
+(797, 1, 'add_product', '{\"name_zh\":\"Haf \\u4e0d\\u9508\\u94a2\\u6c34\\u7f50 \",\"category\":\"Bottle \",\"stock\":100}', '2025-06-07 08:08:48'),
+(798, 1, 'add_product', '{\"name_zh\":\"Haf \\u72ec\\u7279\\u6c34\\u676f \",\"category\":\"Mug\",\"stock\":100}', '2025-06-07 08:10:13'),
+(799, 1, 'add_product', '{\"name_zh\":\"Haf \\u7cbe\\u6cb9\",\"category\":\"Skin Care\",\"stock\":100}', '2025-06-07 08:16:32'),
+(800, 1, 'add_product', '{\"name_zh\":\"Haf \\u62a4\\u80a4\\u54c1\\u5957\\u88c5 \",\"category\":\"Skin Care\",\"stock\":100}', '2025-06-07 08:18:51'),
+(801, 1, 'add_product', '{\"name_zh\":\" Haf \\u65e5\\u5386 \",\"category\":\"Calendar\",\"stock\":100}', '2025-06-07 08:21:21'),
+(802, 1, 'add_product', '{\"name_zh\":\"Haf \\u6807\\u5fd7\\u6c34\\u676f\",\"category\":\"Mug\",\"stock\":100}', '2025-06-07 08:31:40'),
+(803, 1, 'view_products', '{\"page\":1,\"search\":\"\",\"category\":\"\",\"sort\":\"name_asc\"}', '2025-06-07 08:31:42'),
+(804, 1, 'view_products', '{\"page\":2,\"search\":\"\",\"category\":\"\",\"sort\":\"name_asc\"}', '2025-06-07 08:31:47'),
+(805, 1, 'view_products', '{\"page\":2,\"search\":\"\",\"category\":\"\",\"sort\":\"name_asc\"}', '2025-06-07 08:31:50'),
+(806, 1, 'view_products', '{\"page\":1,\"search\":\"\",\"category\":\"\",\"sort\":\"name_asc\"}', '2025-06-07 08:31:50'),
+(807, 1, 'view_products', '{\"page\":2,\"search\":\"\",\"category\":\"\",\"sort\":\"name_asc\"}', '2025-06-07 08:32:01'),
+(808, 1, 'view_products', '{\"page\":1,\"search\":\"\",\"category\":\"\",\"sort\":\"name_asc\"}', '2025-06-07 08:32:03'),
+(809, 1, 'view_products', '{\"page\":1,\"search\":\"\",\"category\":\"\",\"sort\":\"name_asc\"}', '2025-06-07 08:32:05'),
+(810, 1, 'view_products', '{\"page\":1,\"search\":\"\",\"category\":\"\",\"sort\":\"name_asc\"}', '2025-06-07 08:32:06'),
+(811, 1, 'view_products', '{\"page\":1,\"search\":\"\",\"category\":\"\",\"sort\":\"name_asc\"}', '2025-06-07 08:32:17'),
+(812, 1, 'view_products', '{\"page\":1,\"search\":\"\",\"category\":\"\",\"sort\":\"name_asc\"}', '2025-06-07 08:32:19'),
+(813, 1, 'view_products', '{\"page\":2,\"search\":\"\",\"category\":\"\",\"sort\":\"name_asc\"}', '2025-06-07 08:32:23'),
+(814, 1, 'view_products', '{\"page\":1,\"search\":\"\",\"category\":\"\",\"sort\":\"name_asc\"}', '2025-06-07 08:32:26'),
+(815, 1, 'view_products', '{\"page\":2,\"search\":\"\",\"category\":\"\",\"sort\":\"name_asc\"}', '2025-06-07 08:32:28'),
+(816, 1, 'view_products', '{\"page\":1,\"search\":\"\",\"category\":\"\",\"sort\":\"name_asc\"}', '2025-06-07 08:32:28'),
+(817, 1, 'logout', 'User logged out', '2025-06-07 08:32:34'),
+(818, 2, 'login', 'User logged in successfully', '2025-06-07 08:32:39'),
+(819, 2, 'view_products', '{\"page\":1,\"search\":\"\",\"category\":\"\",\"sort\":\"name_asc\"}', '2025-06-07 08:32:39'),
+(820, 2, 'view_products', '{\"page\":2,\"search\":\"\",\"category\":\"\",\"sort\":\"name_asc\"}', '2025-06-07 08:32:43'),
+(821, 2, 'view_products', '{\"page\":1,\"search\":\"\",\"category\":\"\",\"sort\":\"name_asc\"}', '2025-06-07 08:32:44'),
+(822, 2, 'view_products', '{\"page\":1,\"search\":\"\",\"category\":\"\",\"sort\":\"name_asc\"}', '2025-06-07 08:32:50'),
+(823, 2, 'add_to_cart', '{\"product_id\":18,\"quantity\":1}', '2025-06-07 08:32:50'),
+(824, 2, 'view_products', '{\"page\":1,\"search\":\"\",\"category\":\"\",\"sort\":\"name_asc\"}', '2025-06-07 08:32:54');
 
 -- --------------------------------------------------------
 
@@ -879,9 +919,8 @@ INSERT INTO `logs` (`id`, `user_id`, `action`, `details`, `created_at`) VALUES
 -- Table structure for table `orders`
 --
 
-DROP TABLE IF EXISTS `orders`;
-CREATE TABLE IF NOT EXISTS `orders` (
-  `id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `orders` (
+  `id` int NOT NULL,
   `user_id` int NOT NULL,
   `total_zh` decimal(10,2) NOT NULL,
   `total_en` decimal(10,2) NOT NULL,
@@ -889,11 +928,8 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `status` enum('pending','completed','cancelled') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'pending',
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `address_id` int DEFAULT NULL,
-  `payment_method` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'credit_card',
-  PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`),
-  KEY `address_id` (`address_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `payment_method` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'credit_card'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `orders`
@@ -929,17 +965,13 @@ INSERT INTO `orders` (`id`, `user_id`, `total_zh`, `total_en`, `total_ms`, `stat
 -- Table structure for table `order_items`
 --
 
-DROP TABLE IF EXISTS `order_items`;
-CREATE TABLE IF NOT EXISTS `order_items` (
-  `id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `order_items` (
+  `id` int NOT NULL,
   `order_id` int NOT NULL,
   `product_id` int NOT NULL,
   `quantity` int NOT NULL,
-  `price` decimal(10,2) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `order_id` (`order_id`),
-  KEY `product_id` (`product_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `price` decimal(10,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `order_items`
@@ -955,9 +987,8 @@ INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `quantity`, `price`) 
 -- Table structure for table `products`
 --
 
-DROP TABLE IF EXISTS `products`;
-CREATE TABLE IF NOT EXISTS `products` (
-  `id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `products` (
+  `id` int NOT NULL,
   `name_zh` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `name_en` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `name_ms` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -972,9 +1003,8 @@ CREATE TABLE IF NOT EXISTS `products` (
   `alt_en` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `alt_ms` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `category` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `stock` int NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `stock` int NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `products`
@@ -986,7 +1016,19 @@ INSERT INTO `products` (`id`, `name_zh`, `name_en`, `name_ms`, `description_zh`,
 (13, 'Haf 日常T恤', 'Haf Everyday Tee', 'Haf Kemeja-T Harian', '这款日常T恤结合了简洁设计与舒适面料，适合各种场合穿着，无论是上学、出街或居家都百搭耐看。胸前印有 Haf 品牌标志，低调中展现个性，是你每天都想穿上的那一件。', 'Designed for comfort and versatility, the Haf Everyday Tee is your go-to shirt for any occasion&mdash;school, errands, or just relaxing at home. Featuring a clean design and the signature Haf logo, it blends simplicity with everyday style.\r\n\r\n', 'Kemeja-T Harian Haf direka untuk keselesaan dan gaya harian. Sesuai dipakai ke sekolah, berjalan-jalan, atau bersantai di rumah. Logo Haf yang dicetak di bahagian depan menambah sentuhan identiti yang ringkas tetapi bergaya.', 25.00, 25.00, 25.00, 'images/product_684326847f17d.jpg', '这款日常T恤结合了简洁设计与舒适面料，适合各种场合穿着，无论是上学、出街或居家都百搭耐看。胸前印有 Haf 品牌标志，低调中展现个性，是你每天都想穿上的那一件。', 'Designed for comfort and versatility, the Haf Everyday Tee is your go-to shirt for any occasion&mdas', 'Kemeja-T Harian Haf direka untuk keselesaan dan gaya harian. Sesuai dipakai ke sekolah, berjalan-jal', 'clothes', 100),
 (14, 'Haf 运动上衣', 'Haf Activewear Jersey	', 'Jersi Aktif Haf', '这款 Haf 运动上衣采用轻盈透气材质，专为运动和日常活动而设计，无论是晨跑、健身还是休闲穿搭都毫不违和。胸前印有 Haf 品牌标志，运动中也能展现你的独特风格。', 'The Haf Activewear Jersey is crafted with breathable, lightweight fabric&mdash;ideal for workouts, morning jogs, or sporty casual looks. With the iconic Haf logo on the chest, it keeps you moving in style and comfort.\r\n\r\n', 'Jersi Aktif Haf diperbuat daripada kain ringan dan bernafas, sesuai untuk bersenam, berjoging atau gaya santai yang aktif. Dengan logo Haf yang menonjol, ia memberikan gaya dan keselesaan semasa anda bergerak.', 28.00, 28.00, 28.00, 'images/product_684327c52d48c.jpg', '这款 Haf 运动上衣采用轻盈透气材质，专为运动和日常活动而设计，无论是晨跑、健身还是休闲穿搭都毫不违和。胸前印有 Haf 品牌标志，运动中也能展现你的独特风格。', 'The Haf Activewear Jersey is crafted with breathable, lightweight fabric&mdash;ideal for workouts, m', 'The Haf Activewear Jersey is crafted with breathable, lightweight fabric&mdash;ideal for workouts, m', 'clothes', 99),
 (15, 'Haf 经典连帽衫', 'Haf Classic Hoodie	', 'Hoodie Klasik Haf', '这款 Haf 经典连帽衫融合了舒适与时尚，采用柔软厚实面料，适合在冷天穿着或当作日常造型单品。胸前简约印上 Haf 标志，低调而有型，是你衣柜里不可或缺的经典之选。', 'The Haf Classic Hoodie combines comfort and timeless style. Made with soft, cozy fabric, it&rsquo;s perfect for chilly days or casual layering. Featuring a clean Haf logo on the front, it&#039;s a wardrobe essential for any season.\r\n\r\n', 'Hoodie Klasik Haf menggabungkan keselesaan dan gaya abadi. Diperbuat daripada fabrik lembut dan hangat, sesuai untuk cuaca sejuk atau gaya santai harian. Logo Haf yang ringkas di bahagian hadapan menambah sentuhan elegan pada penampilan anda.', 30.00, 30.00, 30.00, 'images/product_684328914df1c.jpg', '这款 Haf 经典连帽衫融合了舒适与时尚，采用柔软厚实面料，适合在冷天穿着或当作日常造型单品。胸前简约印上 Haf 标志，低调而有型，是你衣柜里不可或缺的经典之选。', 'The Haf Classic Hoodie combines comfort and timeless style. Made with soft, cozy fabric, it&rsquo;s ', 'Hoodie Klasik Haf menggabungkan keselesaan dan gaya abadi. Diperbuat daripada fabrik lembut dan hang', 'clothes', 100),
-(16, 'Haf 限量版T恤	', 'Haf Limited Edition Tee	', 'Haf Kemeja-T Edisi Terhad', '这款 Haf 限量版T恤为特别设计，仅限量发行，极具收藏价值。融合独特图案与品牌标志，不仅是时尚穿搭的亮点，更是对 Haf 品牌理念的致敬。错过就买不到，值得你拥有！', 'The Haf Limited Edition Tee is a rare release, crafted with exclusive designs and our iconic logo. A perfect piece for collectors and fans, it&rsquo;s more than just a shirt&mdash;it&rsquo;s a statement. Get yours before it&rsquo;s gone!', 'Haf Kemeja-T Edisi Terhad direka khas dalam jumlah yang terhad, menjadikannya item eksklusif untuk peminat Haf. Dengan reka bentuk unik dan logo tersendiri, ia bukan sekadar pakaian, tetapi lambang gaya dan identiti. Jangan lepaskan peluang!', 45.00, 45.00, 45.00, 'images/product_6843299921945.png', '这款 Haf 限量版T恤为特别设计，仅限量发行，极具收藏价值。融合独特图案与品牌标志，不仅是时尚穿搭的亮点，更是对 Haf 品牌理念的致敬。错过就买不到，值得你拥有！', 'The Haf Limited Edition Tee is a rare release, crafted with exclusive designs and our iconic logo. A', 'Haf Kemeja-T Edisi Terhad direka khas dalam jumlah yang terhad, menjadikannya item eksklusif untuk p', 'clothes', 100);
+(16, 'Haf 限量版T恤	', 'Haf Limited Edition Tee	', 'Haf Kemeja-T Edisi Terhad', '这款 Haf 限量版T恤为特别设计，仅限量发行，极具收藏价值。融合独特图案与品牌标志，不仅是时尚穿搭的亮点，更是对 Haf 品牌理念的致敬。错过就买不到，值得你拥有！', 'The Haf Limited Edition Tee is a rare release, crafted with exclusive designs and our iconic logo. A perfect piece for collectors and fans, it&rsquo;s more than just a shirt&mdash;it&rsquo;s a statement. Get yours before it&rsquo;s gone!', 'Haf Kemeja-T Edisi Terhad direka khas dalam jumlah yang terhad, menjadikannya item eksklusif untuk peminat Haf. Dengan reka bentuk unik dan logo tersendiri, ia bukan sekadar pakaian, tetapi lambang gaya dan identiti. Jangan lepaskan peluang!', 45.00, 45.00, 45.00, 'images/product_6843299921945.png', '这款 Haf 限量版T恤为特别设计，仅限量发行，极具收藏价值。融合独特图案与品牌标志，不仅是时尚穿搭的亮点，更是对 Haf 品牌理念的致敬。错过就买不到，值得你拥有！', 'The Haf Limited Edition Tee is a rare release, crafted with exclusive designs and our iconic logo. A', 'Haf Kemeja-T Edisi Terhad direka khas dalam jumlah yang terhad, menjadikannya item eksklusif untuk p', 'clothes', 100),
+(18, 'Haf 装饰纸带', ' Haf Deco Tape', 'Pita Dekorasi Haf', '这款 Haf 装饰纸带图案独特，适合用于手帐、礼物包装、文具DIY，彰显你的细节美学。\r\n', 'A stylish washi tape with the Haf identity&mdash;perfect for journaling, scrapbooking, or gift wrapping.\r\n\r\n', 'Pita washi Haf dengan reka bentuk unik, sesuai untuk buku jurnal, hadiah, atau hiasan harian.\r\n', 15.00, 15.00, 15.00, 'images/product_6843e6a95120d.png', '这款 Haf 装饰纸带图案独特，适合用于手帐、礼物包装、文具DIY，彰显你的细节美学。', 'A stylish washi tape with the Haf identity&mdash;perfect for journaling, scrapbooking, or gift wrapp', 'Pita washi Haf dengan reka bentuk unik, sesuai untuk buku jurnal, hadiah, atau hiasan harian.', 'Bag', 99),
+(19, 'Haf 水罐', 'Haf Hydration Bottle', 'Botol Air Haf', '轻便易携，Haf 水罐是保持全天水分摄取的好伙伴。环保耐用，是你出门必备。\r\n', 'Stay refreshed with the Haf Bottle&mdash;lightweight, reusable, and made for daily hydration.\r\n\r\n', 'Kekal segar dengan Botol Air Haf&mdash;ringan, boleh guna semula dan bergaya.\r\n', 32.00, 32.00, 32.00, 'images/product_6843f045a38e3.jpg', '轻便易携，Haf 水罐是保持全天水分摄取的好伙伴。环保耐用，是你出门必备。', 'Stay refreshed with the Haf Bottle&mdash;lightweight, reusable, and made for daily hydration.', 'Kekal segar dengan Botol Air Haf&mdash;ringan, boleh guna semula dan bergaya.', 'Bottle ', 100),
+(20, 'Haf 记事本   用 Haf 记事本记录灵感与生活点滴，简约封面设计搭配内页细致排版，是学习与创意工作的好帮手。 Minimalist and functional, the Haf Notes h', ' Haf Notes ', 'Buku Nota Haf', '用 Haf 记事本记录灵感与生活点滴，简约封面设计搭配内页细致排版，是学习与创意工作的好帮手。 ', 'Minimalist and functional, the Haf Notes help you capture ideas anywhere. ', 'Buku nota bergaya Haf untuk mencatat inspirasi dan perancangan harian anda.', 16.00, 16.00, 16.00, 'images/product_6843f1dc1af64.jpg', '用 Haf 记事本记录灵感与生活点滴，简约封面设计搭配内页细致排版，是学习与创意工作的好帮手。 ', 'Minimalist and functional, the Haf Notes help you capture ideas anywhere. ', 'Buku nota bergaya Haf untuk mencatat inspirasi dan perancangan harian anda.', 'Book', 100),
+(21, 'Haf 环保袋 ', 'Haf Eco Tote ', 'Beg Mesra Alam Haf ', '以环保理念打造的 Haf 帆布袋，适合购物、通勤或日常携带，耐用又时尚。 ', 'Stylish and sustainable, the Haf Eco Tote is your go-to bag for daily use. ', 'Beg tahan lama dan mesra alam dengan reka bentuk Haf yang moden dan ringkas.', 17.00, 17.00, 17.00, 'images/product_6843f251d65a6.jpg', '以环保理念打造的 Haf 帆布袋，适合购物、通勤或日常携带，耐用又时尚。 ', 'Stylish and sustainable, the Haf Eco Tote is your go-to bag for daily use. ', 'Beg tahan lama dan mesra alam dengan reka bentuk Haf yang moden dan ringkas.', 'Bag', 100),
+(22, 'Haf 香氛蜡烛 ', 'Haf Scented Candle ', 'Lilin Beraroma Haf ', ' 点燃这款 Haf 香氛蜡烛，让空间充满温暖与宁静气息。多种香味可选，营造放松氛围。', ' Create a cozy vibe with Haf&rsquo;s scented candles&mdash;elegant, calming, and perfect for any space. ', 'Wujudkan suasana tenang dengan lilin wangi Haf&mdash;menenangkan dan berkelas.', 10.00, 10.00, 10.00, 'images/product_6843f2b8a1e2d.jpg', ' 点燃这款 Haf 香氛蜡烛，让空间充满温暖与宁静气息。多种香味可选，营造放松氛围。', ' Create a cozy vibe with Haf&rsquo;s scented candles&mdash;elegant, calming, and perfect for any spa', 'Wujudkan suasana tenang dengan lilin wangi Haf&mdash;menenangkan dan berkelas.', 'Candle', 100),
+(23, 'Haf 舒适抱枕', 'Haf Cozy Pillow', 'Bantal Hiasan Haf', ' 柔软舒适的 Haf 抱枕，不仅为你的空间增添温馨，也展现你对生活品味的坚持。 ', 'Soft and stylish, the Haf Pillow is perfect for your room, sofa, or reading corner.', ' Bantal lembut dan cantik dari Haf untuk keselesaan dan hiasan rumah.', 30.00, 30.00, 30.00, 'images/product_6843f33588f56.jpg', ' 柔软舒适的 Haf 抱枕，不仅为你的空间增添温馨，也展现你对生活品味的坚持。 ', 'Soft and stylish, the Haf Pillow is perfect for your room, sofa, or reading corner.', ' Bantal lembut dan cantik dari Haf untuk keselesaan dan hiasan rumah.', 'Pillow', 100),
+(24, 'Haf 不锈钢水罐 ', 'Haf Steel Flask', 'Termos Keluli Haf  ', 'Haf 不锈钢水罐具备保温保冷功能，适合长时间户外活动或上班族使用。极具质感又耐用。', ' Keep drinks hot or cold all day with the Haf Stainless Steel Flask&mdash;built to last.', ' Termos keluli tahan lama dengan keupayaan mengekalkan suhu, ideal untuk aktiviti harian.', 26.00, 26.00, 26.00, 'images/product_6843f39090784.jpg', 'Haf 不锈钢水罐具备保温保冷功能，适合长时间户外活动或上班族使用。极具质感又耐用。', ' Keep drinks hot or cold all day with the Haf Stainless Steel Flask&mdash;built to last.', ' Termos keluli tahan lama dengan keupayaan mengekalkan suhu, ideal untuk aktiviti harian.', 'Bottle ', 100),
+(25, 'Haf 独特水杯 ', 'Haf Unique Mug ', 'Mug Unik Haf ', ' 造型独特、设计前卫的 Haf 创意杯，每一口都充满个性。是送礼或自用的理想之选。', ' Break the mold with the Haf Unique Mug&mdash;bold design for bold personalities. ', 'Mug unik dengan reka bentuk tersendiri, sesuai untuk hadiah atau koleksi peribadi.', 18.00, 18.00, 18.00, 'images/product_6843f3e552d42.jpg', ' 造型独特、设计前卫的 Haf 创意杯，每一口都充满个性。是送礼或自用的理想之选。', ' Break the mold with the Haf Unique Mug&mdash;bold design for bold personalities. ', 'Mug unik dengan reka bentuk tersendiri, sesuai untuk hadiah atau koleksi peribadi.', 'Mug', 100),
+(26, 'Haf 精油', 'Haf Essential Oil ', 'Minyak Pati Haf  ', ' Haf 精油采用天然植物萃取，适合香薰、按摩或冥想使用，帮助你放松身心，恢复平衡。 ', 'Haf Essential Oil is made from pure botanical extracts to calm your mind and refresh your space. ', 'Minyak pati Haf daripada bahan semula jadi, membantu menenangkan fikiran dan menyegarkan suasana.', 58.00, 58.00, 58.00, 'images/product_6843f560ce73e.jpg', ' Haf 精油采用天然植物萃取，适合香薰、按摩或冥想使用，帮助你放松身心，恢复平衡。 ', 'Haf Essential Oil is made from pure botanical extracts to calm your mind and refresh your space. ', 'Minyak pati Haf daripada bahan semula jadi, membantu menenangkan fikiran dan menyegarkan suasana.', 'Skin Care', 100),
+(27, 'Haf 护肤品套装 ', ' Haf Skincare Set ', 'Set Penjagaan Kulit Haf  ', '为不同肤质设计的 Haf 护肤系列，温和呵护，补水滋养，打造清新自然的健康肌肤。 ', 'Gentle yet effective, Haf Skincare is your daily ritual for radiant and hydrated skin. ', 'Penjagaan kulit Haf yang lembut sesuai untuk semua jenis kulit&mdash;kulit sihat dan berseri setiap hari.', 36.00, 36.00, 36.00, 'images/product_6843f5eb4e9be.png', '为不同肤质设计的 Haf 护肤系列，温和呵护，补水滋养，打造清新自然的健康肌肤。 ', 'Gentle yet effective, Haf Skincare is your daily ritual for radiant and hydrated skin. ', 'Penjagaan kulit Haf yang lembut sesuai untuk semua jenis kulit&mdash;kulit sihat dan berseri setiap ', 'Skin Care', 100),
+(28, ' Haf 日历 ', 'Haf Wall Calendar ', 'Kalendar Dinding Haf  ', ' 这款 Haf 挂历设计简约实用，附有标记空间，适合记录重要日子，装点你的墙面与生活。 ', 'Stay organized and inspired with the Haf Wall Calendar&mdash;minimalist, functional, and stylish. ', 'Kalendar dinding Haf yang kemas dan praktikal, sesuai untuk hiasan dan perancangan bulanan anda.', 24.00, 24.00, 24.00, 'images/product_6843f6816f888.png', ' 这款 Haf 挂历设计简约实用，附有标记空间，适合记录重要日子，装点你的墙面与生活。 ', 'Stay organized and inspired with the Haf Wall Calendar&mdash;minimalist, functional, and stylish. ', 'Kalendar dinding Haf yang kemas dan praktikal, sesuai untuk hiasan dan perancangan bulanan anda.', 'Calendar', 100),
+(29, 'Haf 标志水杯', 'Haf Logo Mug', 'Mug Logo Haf  解释： ', '这款经典 Haf LOGO 杯以陶瓷制作，印有 Haf 品牌标志，简约不失格调，适合日常饮品使用或作为纪念收藏。', ' A timeless ceramic mug featuring the Haf logo&mdash;perfect for everyday coffee, tea, or as a stylish gift. ', 'Mug seramik Haf dengan logo ikonik&mdash;ideal untuk kegunaan harian atau sebagai cenderahati eksklusif.', 28.00, 28.00, 28.00, 'images/product_6843f8eccc88e.jpg', '这款经典 Haf LOGO 杯以陶瓷制作，印有 Haf 品牌标志，简约不失格调，适合日常饮品使用或作为纪念收藏。', ' A timeless ceramic mug featuring the Haf logo&mdash;perfect for everyday coffee, tea, or as a styli', 'Mug seramik Haf dengan logo ikonik&mdash;ideal untuk kegunaan harian atau sebagai cenderahati eksklu', 'Mug', 100);
 
 -- --------------------------------------------------------
 
@@ -994,18 +1036,15 @@ INSERT INTO `products` (`id`, `name_zh`, `name_en`, `name_ms`, `description_zh`,
 -- Table structure for table `product_images`
 --
 
-DROP TABLE IF EXISTS `product_images`;
-CREATE TABLE IF NOT EXISTS `product_images` (
-  `id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `product_images` (
+  `id` int NOT NULL,
   `product_id` int NOT NULL,
   `image_path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `alt_zh` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `alt_en` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `alt_ms` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `is_primary` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `product_id` (`product_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `is_primary` tinyint(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `product_images`
@@ -1030,7 +1069,43 @@ INSERT INTO `product_images` (`id`, `product_id`, `image_path`, `alt_zh`, `alt_e
 (26, 15, 'images/product_684328914eab4.jpg', '这款 Haf 经典连帽衫融合了舒适与时尚，采用柔软厚实面料，适合在冷天穿着或当作日常造型单品。胸前简约印上 Haf 标志，低调而有型，是你衣柜里不可或缺的经典之选。', 'The Haf Classic Hoodie combines comfort and timeless style. Made with soft, cozy fabric, it&rsquo;s perfect for chilly days or casual layering. Featuring a clean Haf logo on the front, it&#039;s a wardrobe essential for any season.', 'Hoodie Klasik Haf menggabungkan keselesaan dan gaya abadi. Diperbuat daripada fabrik lembut dan hangat, sesuai untuk cuaca sejuk atau gaya santai harian. Logo Haf yang ringkas di bahagian hadapan menambah sentuhan elegan pada penampilan anda.', 0),
 (27, 16, 'images/product_6843299921945.png', '这款 Haf 限量版T恤为特别设计，仅限量发行，极具收藏价值。融合独特图案与品牌标志，不仅是时尚穿搭的亮点，更是对 Haf 品牌理念的致敬。错过就买不到，值得你拥有！', 'The Haf Limited Edition Tee is a rare release, crafted with exclusive designs and our iconic logo. A perfect piece for collectors and fans, it&rsquo;s more than just a shirt&mdash;it&rsquo;s a statement. Get yours before it&rsquo;s gone!', 'Haf Kemeja-T Edisi Terhad direka khas dalam jumlah yang terhad, menjadikannya item eksklusif untuk peminat Haf. Dengan reka bentuk unik dan logo tersendiri, ia bukan sekadar pakaian, tetapi lambang gaya dan identiti. Jangan lepaskan peluang!', 1),
 (28, 16, 'images/product_6843299921b95.jpg', '这款 Haf 限量版T恤为特别设计，仅限量发行，极具收藏价值。融合独特图案与品牌标志，不仅是时尚穿搭的亮点，更是对 Haf 品牌理念的致敬。错过就买不到，值得你拥有！', 'The Haf Limited Edition Tee is a rare release, crafted with exclusive designs and our iconic logo. A perfect piece for collectors and fans, it&rsquo;s more than just a shirt&mdash;it&rsquo;s a statement. Get yours before it&rsquo;s gone!', 'Haf Kemeja-T Edisi Terhad direka khas dalam jumlah yang terhad, menjadikannya item eksklusif untuk peminat Haf. Dengan reka bentuk unik dan logo tersendiri, ia bukan sekadar pakaian, tetapi lambang gaya dan identiti. Jangan lepaskan peluang!', 0),
-(29, 16, 'images/product_6843299921e0b.png', '这款 Haf 限量版T恤为特别设计，仅限量发行，极具收藏价值。融合独特图案与品牌标志，不仅是时尚穿搭的亮点，更是对 Haf 品牌理念的致敬。错过就买不到，值得你拥有！', 'The Haf Limited Edition Tee is a rare release, crafted with exclusive designs and our iconic logo. A perfect piece for collectors and fans, it&rsquo;s more than just a shirt&mdash;it&rsquo;s a statement. Get yours before it&rsquo;s gone!', 'Haf Kemeja-T Edisi Terhad direka khas dalam jumlah yang terhad, menjadikannya item eksklusif untuk peminat Haf. Dengan reka bentuk unik dan logo tersendiri, ia bukan sekadar pakaian, tetapi lambang gaya dan identiti. Jangan lepaskan peluang!', 0);
+(29, 16, 'images/product_6843299921e0b.png', '这款 Haf 限量版T恤为特别设计，仅限量发行，极具收藏价值。融合独特图案与品牌标志，不仅是时尚穿搭的亮点，更是对 Haf 品牌理念的致敬。错过就买不到，值得你拥有！', 'The Haf Limited Edition Tee is a rare release, crafted with exclusive designs and our iconic logo. A perfect piece for collectors and fans, it&rsquo;s more than just a shirt&mdash;it&rsquo;s a statement. Get yours before it&rsquo;s gone!', 'Haf Kemeja-T Edisi Terhad direka khas dalam jumlah yang terhad, menjadikannya item eksklusif untuk peminat Haf. Dengan reka bentuk unik dan logo tersendiri, ia bukan sekadar pakaian, tetapi lambang gaya dan identiti. Jangan lepaskan peluang!', 0),
+(33, 18, 'images/product_6843e6a95120d.png', '这款 Haf 装饰纸带图案独特，适合用于手帐、礼物包装、文具DIY，彰显你的细节美学。', 'A stylish washi tape with the Haf identity&mdash;perfect for journaling, scrapbooking, or gift wrapping. ', 'Pita washi Haf dengan reka bentuk unik, sesuai untuk buku jurnal, hadiah, atau hiasan harian.', 1),
+(34, 18, 'images/product_6843e6a9514ae.jpg', '这款 Haf 装饰纸带图案独特，适合用于手帐、礼物包装、文具DIY，彰显你的细节美学。', 'A stylish washi tape with the Haf identity&mdash;perfect for journaling, scrapbooking, or gift wrapping. ', 'Pita washi Haf dengan reka bentuk unik, sesuai untuk buku jurnal, hadiah, atau hiasan harian.', 0),
+(35, 18, 'images/product_6843e6a951614.jpg', '这款 Haf 装饰纸带图案独特，适合用于手帐、礼物包装、文具DIY，彰显你的细节美学。', 'A stylish washi tape with the Haf identity&mdash;perfect for journaling, scrapbooking, or gift wrapping. ', 'Pita washi Haf dengan reka bentuk unik, sesuai untuk buku jurnal, hadiah, atau hiasan harian.', 0),
+(36, 19, 'images/product_6843f045a38e3.jpg', '轻便易携，Haf 水罐是保持全天水分摄取的好伙伴。环保耐用，是你出门必备。', 'Stay refreshed with the Haf Bottle&mdash;lightweight, reusable, and made for daily hydration.', 'Kekal segar dengan Botol Air Haf&mdash;ringan, boleh guna semula dan bergaya.', 1),
+(37, 19, 'images/product_6843f045a3d3e.png', '轻便易携，Haf 水罐是保持全天水分摄取的好伙伴。环保耐用，是你出门必备。', 'Stay refreshed with the Haf Bottle&mdash;lightweight, reusable, and made for daily hydration.', 'Kekal segar dengan Botol Air Haf&mdash;ringan, boleh guna semula dan bergaya.', 0),
+(38, 19, 'images/product_6843f045a406a.jpg', '轻便易携，Haf 水罐是保持全天水分摄取的好伙伴。环保耐用，是你出门必备。', 'Stay refreshed with the Haf Bottle&mdash;lightweight, reusable, and made for daily hydration.', 'Kekal segar dengan Botol Air Haf&mdash;ringan, boleh guna semula dan bergaya.', 0),
+(39, 20, 'images/product_6843f1dc1af64.jpg', '用 Haf 记事本记录灵感与生活点滴，简约封面设计搭配内页细致排版，是学习与创意工作的好帮手。 ', 'Minimalist and functional, the Haf Notes help you capture ideas anywhere. ', 'Buku nota bergaya Haf untuk mencatat inspirasi dan perancangan harian anda.', 1),
+(40, 20, 'images/product_6843f1dc1b1a0.jpg', '用 Haf 记事本记录灵感与生活点滴，简约封面设计搭配内页细致排版，是学习与创意工作的好帮手。 ', 'Minimalist and functional, the Haf Notes help you capture ideas anywhere. ', 'Buku nota bergaya Haf untuk mencatat inspirasi dan perancangan harian anda.', 0),
+(41, 20, 'images/product_6843f1dc1b3ad.png', '用 Haf 记事本记录灵感与生活点滴，简约封面设计搭配内页细致排版，是学习与创意工作的好帮手。 ', 'Minimalist and functional, the Haf Notes help you capture ideas anywhere. ', 'Buku nota bergaya Haf untuk mencatat inspirasi dan perancangan harian anda.', 0),
+(42, 21, 'images/product_6843f251d65a6.jpg', '以环保理念打造的 Haf 帆布袋，适合购物、通勤或日常携带，耐用又时尚。 ', 'Stylish and sustainable, the Haf Eco Tote is your go-to bag for daily use. ', 'Beg tahan lama dan mesra alam dengan reka bentuk Haf yang moden dan ringkas.', 1),
+(43, 21, 'images/product_6843f251d693a.jpg', '以环保理念打造的 Haf 帆布袋，适合购物、通勤或日常携带，耐用又时尚。 ', 'Stylish and sustainable, the Haf Eco Tote is your go-to bag for daily use. ', 'Beg tahan lama dan mesra alam dengan reka bentuk Haf yang moden dan ringkas.', 0),
+(44, 21, 'images/product_6843f251d6b26.jpg', '以环保理念打造的 Haf 帆布袋，适合购物、通勤或日常携带，耐用又时尚。 ', 'Stylish and sustainable, the Haf Eco Tote is your go-to bag for daily use. ', 'Beg tahan lama dan mesra alam dengan reka bentuk Haf yang moden dan ringkas.', 0),
+(45, 22, 'images/product_6843f2b8a1e2d.jpg', ' 点燃这款 Haf 香氛蜡烛，让空间充满温暖与宁静气息。多种香味可选，营造放松氛围。', ' Create a cozy vibe with Haf&rsquo;s scented candles&mdash;elegant, calming, and perfect for any space. ', 'Wujudkan suasana tenang dengan lilin wangi Haf&mdash;menenangkan dan berkelas.', 1),
+(46, 22, 'images/product_6843f2b8a2126.jpg', ' 点燃这款 Haf 香氛蜡烛，让空间充满温暖与宁静气息。多种香味可选，营造放松氛围。', ' Create a cozy vibe with Haf&rsquo;s scented candles&mdash;elegant, calming, and perfect for any space. ', 'Wujudkan suasana tenang dengan lilin wangi Haf&mdash;menenangkan dan berkelas.', 0),
+(47, 22, 'images/product_6843f2b8a22d6.jpg', ' 点燃这款 Haf 香氛蜡烛，让空间充满温暖与宁静气息。多种香味可选，营造放松氛围。', ' Create a cozy vibe with Haf&rsquo;s scented candles&mdash;elegant, calming, and perfect for any space. ', 'Wujudkan suasana tenang dengan lilin wangi Haf&mdash;menenangkan dan berkelas.', 0),
+(48, 23, 'images/product_6843f33588f56.jpg', ' 柔软舒适的 Haf 抱枕，不仅为你的空间增添温馨，也展现你对生活品味的坚持。 ', 'Soft and stylish, the Haf Pillow is perfect for your room, sofa, or reading corner.', ' Bantal lembut dan cantik dari Haf untuk keselesaan dan hiasan rumah.', 1),
+(49, 23, 'images/product_6843f335891c1.jpg', ' 柔软舒适的 Haf 抱枕，不仅为你的空间增添温馨，也展现你对生活品味的坚持。 ', 'Soft and stylish, the Haf Pillow is perfect for your room, sofa, or reading corner.', ' Bantal lembut dan cantik dari Haf untuk keselesaan dan hiasan rumah.', 0),
+(50, 23, 'images/product_6843f3358935f.jpg', ' 柔软舒适的 Haf 抱枕，不仅为你的空间增添温馨，也展现你对生活品味的坚持。 ', 'Soft and stylish, the Haf Pillow is perfect for your room, sofa, or reading corner.', ' Bantal lembut dan cantik dari Haf untuk keselesaan dan hiasan rumah.', 0),
+(51, 24, 'images/product_6843f39090784.jpg', 'Haf 不锈钢水罐具备保温保冷功能，适合长时间户外活动或上班族使用。极具质感又耐用。', ' Keep drinks hot or cold all day with the Haf Stainless Steel Flask&mdash;built to last.', ' Termos keluli tahan lama dengan keupayaan mengekalkan suhu, ideal untuk aktiviti harian.', 1),
+(52, 24, 'images/product_6843f390909e7.jpg', 'Haf 不锈钢水罐具备保温保冷功能，适合长时间户外活动或上班族使用。极具质感又耐用。', ' Keep drinks hot or cold all day with the Haf Stainless Steel Flask&mdash;built to last.', ' Termos keluli tahan lama dengan keupayaan mengekalkan suhu, ideal untuk aktiviti harian.', 0),
+(53, 24, 'images/product_6843f39090b7d.jpg', 'Haf 不锈钢水罐具备保温保冷功能，适合长时间户外活动或上班族使用。极具质感又耐用。', ' Keep drinks hot or cold all day with the Haf Stainless Steel Flask&mdash;built to last.', ' Termos keluli tahan lama dengan keupayaan mengekalkan suhu, ideal untuk aktiviti harian.', 0),
+(54, 25, 'images/product_6843f3e552d42.jpg', ' 造型独特、设计前卫的 Haf 创意杯，每一口都充满个性。是送礼或自用的理想之选。', ' Break the mold with the Haf Unique Mug&mdash;bold design for bold personalities. ', 'Mug unik dengan reka bentuk tersendiri, sesuai untuk hadiah atau koleksi peribadi.', 1),
+(55, 25, 'images/product_6843f3e55311e.jpg', ' 造型独特、设计前卫的 Haf 创意杯，每一口都充满个性。是送礼或自用的理想之选。', ' Break the mold with the Haf Unique Mug&mdash;bold design for bold personalities. ', 'Mug unik dengan reka bentuk tersendiri, sesuai untuk hadiah atau koleksi peribadi.', 0),
+(56, 25, 'images/product_6843f3e5534d3.jpg', ' 造型独特、设计前卫的 Haf 创意杯，每一口都充满个性。是送礼或自用的理想之选。', ' Break the mold with the Haf Unique Mug&mdash;bold design for bold personalities. ', 'Mug unik dengan reka bentuk tersendiri, sesuai untuk hadiah atau koleksi peribadi.', 0),
+(57, 26, 'images/product_6843f560ce73e.jpg', ' Haf 精油采用天然植物萃取，适合香薰、按摩或冥想使用，帮助你放松身心，恢复平衡。 ', 'Haf Essential Oil is made from pure botanical extracts to calm your mind and refresh your space. ', 'Minyak pati Haf daripada bahan semula jadi, membantu menenangkan fikiran dan menyegarkan suasana.', 1),
+(58, 26, 'images/product_6843f560cebfd.jpg', ' Haf 精油采用天然植物萃取，适合香薰、按摩或冥想使用，帮助你放松身心，恢复平衡。 ', 'Haf Essential Oil is made from pure botanical extracts to calm your mind and refresh your space. ', 'Minyak pati Haf daripada bahan semula jadi, membantu menenangkan fikiran dan menyegarkan suasana.', 0),
+(59, 26, 'images/product_6843f560ceeaa.jpg', ' Haf 精油采用天然植物萃取，适合香薰、按摩或冥想使用，帮助你放松身心，恢复平衡。 ', 'Haf Essential Oil is made from pure botanical extracts to calm your mind and refresh your space. ', 'Minyak pati Haf daripada bahan semula jadi, membantu menenangkan fikiran dan menyegarkan suasana.', 0),
+(60, 27, 'images/product_6843f5eb4e9be.png', '为不同肤质设计的 Haf 护肤系列，温和呵护，补水滋养，打造清新自然的健康肌肤。 ', 'Gentle yet effective, Haf Skincare is your daily ritual for radiant and hydrated skin. ', 'Penjagaan kulit Haf yang lembut sesuai untuk semua jenis kulit&mdash;kulit sihat dan berseri setiap hari.', 1),
+(61, 27, 'images/product_6843f5eb4ed75.jpg', '为不同肤质设计的 Haf 护肤系列，温和呵护，补水滋养，打造清新自然的健康肌肤。 ', 'Gentle yet effective, Haf Skincare is your daily ritual for radiant and hydrated skin. ', 'Penjagaan kulit Haf yang lembut sesuai untuk semua jenis kulit&mdash;kulit sihat dan berseri setiap hari.', 0),
+(62, 27, 'images/product_6843f5eb4ef07.jpg', '为不同肤质设计的 Haf 护肤系列，温和呵护，补水滋养，打造清新自然的健康肌肤。 ', 'Gentle yet effective, Haf Skincare is your daily ritual for radiant and hydrated skin. ', 'Penjagaan kulit Haf yang lembut sesuai untuk semua jenis kulit&mdash;kulit sihat dan berseri setiap hari.', 0),
+(63, 28, 'images/product_6843f6816f888.png', ' 这款 Haf 挂历设计简约实用，附有标记空间，适合记录重要日子，装点你的墙面与生活。 ', 'Stay organized and inspired with the Haf Wall Calendar&mdash;minimalist, functional, and stylish. ', 'Kalendar dinding Haf yang kemas dan praktikal, sesuai untuk hiasan dan perancangan bulanan anda.', 1),
+(64, 28, 'images/product_6843f6816facd.jpg', ' 这款 Haf 挂历设计简约实用，附有标记空间，适合记录重要日子，装点你的墙面与生活。 ', 'Stay organized and inspired with the Haf Wall Calendar&mdash;minimalist, functional, and stylish. ', 'Kalendar dinding Haf yang kemas dan praktikal, sesuai untuk hiasan dan perancangan bulanan anda.', 0),
+(65, 28, 'images/product_6843f6816fc7e.png', ' 这款 Haf 挂历设计简约实用，附有标记空间，适合记录重要日子，装点你的墙面与生活。 ', 'Stay organized and inspired with the Haf Wall Calendar&mdash;minimalist, functional, and stylish. ', 'Kalendar dinding Haf yang kemas dan praktikal, sesuai untuk hiasan dan perancangan bulanan anda.', 0),
+(66, 29, 'images/product_6843f8eccc88e.jpg', '这款经典 Haf LOGO 杯以陶瓷制作，印有 Haf 品牌标志，简约不失格调，适合日常饮品使用或作为纪念收藏。', ' A timeless ceramic mug featuring the Haf logo&mdash;perfect for everyday coffee, tea, or as a stylish gift. ', 'Mug seramik Haf dengan logo ikonik&mdash;ideal untuk kegunaan harian atau sebagai cenderahati eksklusif.', 1),
+(67, 29, 'images/product_6843f8ecccc64.jpg', '这款经典 Haf LOGO 杯以陶瓷制作，印有 Haf 品牌标志，简约不失格调，适合日常饮品使用或作为纪念收藏。', ' A timeless ceramic mug featuring the Haf logo&mdash;perfect for everyday coffee, tea, or as a stylish gift. ', 'Mug seramik Haf dengan logo ikonik&mdash;ideal untuk kegunaan harian atau sebagai cenderahati eksklusif.', 0),
+(68, 29, 'images/product_6843f8ecccf39.jpg', '这款经典 Haf LOGO 杯以陶瓷制作，印有 Haf 品牌标志，简约不失格调，适合日常饮品使用或作为纪念收藏。', ' A timeless ceramic mug featuring the Haf logo&mdash;perfect for everyday coffee, tea, or as a stylish gift. ', 'Mug seramik Haf dengan logo ikonik&mdash;ideal untuk kegunaan harian atau sebagai cenderahati eksklusif.', 0);
 
 -- --------------------------------------------------------
 
@@ -1038,18 +1113,14 @@ INSERT INTO `product_images` (`id`, `product_id`, `image_path`, `alt_zh`, `alt_e
 -- Table structure for table `product_reviews`
 --
 
-DROP TABLE IF EXISTS `product_reviews`;
-CREATE TABLE IF NOT EXISTS `product_reviews` (
-  `id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `product_reviews` (
+  `id` int NOT NULL,
   `product_id` int NOT NULL,
   `user_id` int NOT NULL,
   `rating` int NOT NULL,
   `comment` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  KEY `product_id` (`product_id`),
-  KEY `user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1057,17 +1128,13 @@ CREATE TABLE IF NOT EXISTS `product_reviews` (
 -- Table structure for table `users`
 --
 
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE IF NOT EXISTS `users` (
-  `id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `users` (
+  `id` int NOT NULL,
   `username` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `role` enum('user','admin') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'user',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `username` (`username`),
-  UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `role` enum('user','admin') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'user'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `users`
@@ -1087,13 +1154,10 @@ INSERT INTO `users` (`id`, `username`, `email`, `password`, `role`) VALUES
 -- Table structure for table `wishlist`
 --
 
-DROP TABLE IF EXISTS `wishlist`;
-CREATE TABLE IF NOT EXISTS `wishlist` (
+CREATE TABLE `wishlist` (
   `user_id` int NOT NULL,
   `product_id` int NOT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`user_id`,`product_id`),
-  KEY `product_id` (`product_id`)
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -1102,6 +1166,135 @@ CREATE TABLE IF NOT EXISTS `wishlist` (
 
 INSERT INTO `wishlist` (`user_id`, `product_id`, `created_at`) VALUES
 (1, 11, '2025-06-06 17:04:00');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `addresses`
+--
+ALTER TABLE `addresses`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `cart`
+--
+ALTER TABLE `cart`
+  ADD PRIMARY KEY (`user_id`,`product_id`),
+  ADD KEY `product_id` (`product_id`);
+
+--
+-- Indexes for table `logs`
+--
+ALTER TABLE `logs`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `orders`
+--
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `address_id` (`address_id`);
+
+--
+-- Indexes for table `order_items`
+--
+ALTER TABLE `order_items`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `order_id` (`order_id`),
+  ADD KEY `product_id` (`product_id`);
+
+--
+-- Indexes for table `products`
+--
+ALTER TABLE `products`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `product_images`
+--
+ALTER TABLE `product_images`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `product_id` (`product_id`);
+
+--
+-- Indexes for table `product_reviews`
+--
+ALTER TABLE `product_reviews`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `product_id` (`product_id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`),
+  ADD UNIQUE KEY `email` (`email`);
+
+--
+-- Indexes for table `wishlist`
+--
+ALTER TABLE `wishlist`
+  ADD PRIMARY KEY (`user_id`,`product_id`),
+  ADD KEY `product_id` (`product_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `addresses`
+--
+ALTER TABLE `addresses`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `logs`
+--
+ALTER TABLE `logs`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=825;
+
+--
+-- AUTO_INCREMENT for table `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+
+--
+-- AUTO_INCREMENT for table `order_items`
+--
+ALTER TABLE `order_items`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+
+--
+-- AUTO_INCREMENT for table `products`
+--
+ALTER TABLE `products`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+
+--
+-- AUTO_INCREMENT for table `product_images`
+--
+ALTER TABLE `product_images`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
+
+--
+-- AUTO_INCREMENT for table `product_reviews`
+--
+ALTER TABLE `product_reviews`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Constraints for dumped tables

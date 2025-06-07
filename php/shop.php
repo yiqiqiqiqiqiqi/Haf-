@@ -181,12 +181,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['lang'])) {
 
 // Handle filters, sorting, and pagination
 $search = isset($_GET['search']) ? trim(filter_var($_GET['search'], FILTER_SANITIZE_FULL_SPECIAL_CHARS)) : '';
-$min_price = isset($_GET['min_price']) ? filter_var($_GET['min_price'], FILTER_VALIDATE_FLOAT) : null;
-$max_price = isset($_GET['max_price']) ? filter_var($_GET['max_price'], FILTER_VALIDATE_FLOAT) : null;
-$category = isset($_GET['category']) ? trim(filter_var($_GET['category'], FILTER_SANITIZE_FULL_SPECIAL_CHARS)) : '';
+$min_price = isset($_GET['min_price']) && $_GET['min_price'] !== '' ? filter_var($_GET['min_price'], FILTER_VALIDATE_FLOAT) : null;
+$max_price = isset($_GET['max_price']) && $_GET['max_price'] !== '' ? filter_var($_GET['max_price'], FILTER_VALIDATE_FLOAT) : null;
+$category = isset($_GET['category']) && $_GET['category'] !== 'all' ? trim(filter_var($_GET['category'], FILTER_SANITIZE_FULL_SPECIAL_CHARS)) : '';
 $sort = isset($_GET['sort']) ? $_GET['sort'] : 'name_asc';
 $page = isset($_GET['page']) ? max(1, filter_var($_GET['page'], FILTER_VALIDATE_INT)) : 1;
 $per_page = 9; // Products per page
+
+// Validate page number
+if ($page < 1) {
+    $page = 1;
+}
 
 // Build the query
 $query = "SELECT p.*, 
@@ -197,7 +202,7 @@ $params = [];
 
 // Apply search filter
 if ($search) {
-    $query .= " AND (p.name_zh LIKE ? OR p.name_en LIKE ? OR p.name_ms LIKE ?)";
+    $query .= " AND (p.name_zh LIKE ? OR p.name_en LIKE ? OR p.name_ms LIKE ? OR p.name_zh IS NULL OR p.name_en IS NULL OR p.name_ms IS NULL)";
     $params[] = "%$search%";
     $params[] = "%$search%";
     $params[] = "%$search%";
@@ -205,26 +210,26 @@ if ($search) {
 
 // Apply price filter
 if ($min_price !== null) {
-    $query .= " AND p.price_$lang >= ?";
+    $query .= " AND (p.price_$lang >= ? OR p.price_$lang IS NULL)";
     $params[] = $min_price;
 }
 if ($max_price !== null) {
-    $query .= " AND p.price_$lang <= ?";
+    $query .= " AND (p.price_$lang <= ? OR p.price_$lang IS NULL)";
     $params[] = $max_price;
 }
 
 // Apply category filter
-if ($category && $category !== 'all') {
+if ($category) {
     $query .= " AND p.category = ?";
     $params[] = $category;
 }
 
 // Apply sorting
 $sort_options = [
-    'name_asc' => "p.name_$lang ASC",
-    'name_desc' => "p.name_$lang DESC",
-    'price_asc' => "p.price_$lang ASC",
-    'price_desc' => "p.price_$lang DESC"
+    'name_asc' => "COALESCE(p.name_$lang, p.name_zh, p.name_en, p.name_ms) ASC",
+    'name_desc' => "COALESCE(p.name_$lang, p.name_zh, p.name_en, p.name_ms) DESC",
+    'price_asc' => "COALESCE(p.price_$lang, 0) ASC",
+    'price_desc' => "COALESCE(p.price_$lang, 0) DESC"
 ];
 $order_by = $sort_options[$sort] ?? $sort_options['name_asc'];
 $query .= " ORDER BY $order_by";
@@ -232,27 +237,27 @@ $query .= " ORDER BY $order_by";
 // Pagination
 $offset = ($page - 1) * $per_page;
 $query .= " LIMIT ? OFFSET ?";
-$params[] = $per_page;
-$params[] = $offset;
+$params[] = (int)$per_page;
+$params[] = (int)$offset;
 
 // Fetch total number of products for pagination
 $total_query = "SELECT COUNT(*) FROM products WHERE 1=1";
 $total_params = [];
 if ($search) {
-    $total_query .= " AND (name_zh LIKE ? OR name_en LIKE ? OR name_ms LIKE ?)";
+    $total_query .= " AND (name_zh LIKE ? OR name_en LIKE ? OR name_ms LIKE ? OR name_zh IS NULL OR name_en IS NULL OR name_ms IS NULL)";
     $total_params[] = "%$search%";
     $total_params[] = "%$search%";
     $total_params[] = "%$search%";
 }
 if ($min_price !== null) {
-    $total_query .= " AND price_$lang >= ?";
+    $total_query .= " AND (price_$lang >= ? OR price_$lang IS NULL)";
     $total_params[] = $min_price;
 }
 if ($max_price !== null) {
-    $total_query .= " AND price_$lang <= ?";
+    $total_query .= " AND (price_$lang <= ? OR price_$lang IS NULL)";
     $total_params[] = $max_price;
 }
-if ($category && $category !== 'all') {
+if ($category) {
     $total_query .= " AND category = ?";
     $total_params[] = $category;
 }
@@ -266,12 +271,22 @@ if (isset($pdo) && $pdo !== null) {
         // Fetch total count
         $stmt = $pdo->prepare($total_query);
         $stmt->execute($total_params);
-        $total_products = $stmt->fetchColumn();
+        $total_products = (int)$stmt->fetchColumn();
+
+        // Debug: Log the total query and parameters
+        error_log("Total Query: $total_query", 3, 'C:/wamp64/logs/php_error.log');
+        error_log("Total Params: " . print_r($total_params, true), 3, 'C:/wamp64/logs/php_error.log');
+        error_log("Total Products: $total_products", 3, 'C:/wamp64/logs/php_error.log');
 
         // Fetch products
         $stmt = $pdo->prepare($query);
         $stmt->execute($params);
         $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Debug: Log the main query and parameters
+        error_log("Main Query: $query", 3, 'C:/wamp64/logs/php_error.log');
+        error_log("Main Params: " . print_r($params, true), 3, 'C:/wamp64/logs/php_error.log');
+        error_log("Products Fetched: " . count($products), 3, 'C:/wamp64/logs/php_error.log');
 
         // Fetch images for all products
         $product_ids = array_column($products, 'id');
@@ -318,11 +333,11 @@ if (isset($pdo) && $pdo !== null) {
             ]);
         }
     } catch (PDOException $e) {
-        error_log('查询产品失败：' . $e->getMessage(), 3, 'C:/wamp64/logs/php_error.log');
+        error_log('Query failed: ' . $e->getMessage(), 3, 'C:/wamp64/logs/php_error.log');
         $_SESSION['error'] = $texts['error_message'];
     }
 } else {
-    error_log('PDO 未定义或为 null', 3, 'C:/wamp64/logs/php_error.log');
+    error_log('PDO is undefined or null', 3, 'C:/wamp64/logs/php_error.log');
     $_SESSION['error'] = $texts['db_error'];
 }
 
@@ -333,12 +348,27 @@ if (isset($pdo) && $pdo !== null) {
         $stmt = $pdo->query("SELECT DISTINCT category FROM products ORDER BY category");
         $categories = $stmt->fetchAll(PDO::FETCH_COLUMN);
     } catch (PDOException $e) {
-        error_log('查询类别失败：' . $e->getMessage(), 3, 'C:/wamp64/logs/php_error.log');
+        error_log('Category query failed: ' . $e->getMessage(), 3, 'C:/wamp64/logs/php_error.log');
     }
 }
 
 // Calculate total pages
 $total_pages = ceil($total_products / $per_page);
+
+// Validate page number against total pages
+if ($page > $total_pages && $total_pages > 0) {
+    $page = $total_pages;
+    $offset = ($page - 1) * $per_page;
+    try {
+        $stmt = $pdo->prepare($query);
+        $stmt->execute($params);
+        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        error_log("Re-query for corrected page: Products Fetched: " . count($products), 3, 'C:/wamp64/logs/php_error.log');
+    } catch (PDOException $e) {
+        error_log('Re-query failed: ' . $e->getMessage(), 3, 'C:/wamp64/logs/php_error.log');
+        $_SESSION['error'] = $texts['error_message'];
+    }
+}
 
 // Rate limiting for cart additions and wishlist
 if (!isset($_SESSION['cart_add_attempts'])) {
@@ -348,12 +378,8 @@ if (!isset($_SESSION['wishlist_attempts'])) {
     $_SESSION['wishlist_attempts'] = [];
 }
 $now = time();
-$_SESSION['cart_add_attempts'] = array_filter($_SESSION['cart_add_attempts'], function($timestamp) use ($now) {
-    return ($now - $timestamp) < 3600;
-});
-$_SESSION['wishlist_attempts'] = array_filter($_SESSION['wishlist_attempts'], function($timestamp) use ($now) {
-    return ($now - $timestamp) < 3600;
-});
+$_SESSION['cart_add_attempts'] = array_filter($_SESSION['cart_add_attempts'], fn($timestamp) => ($now - $timestamp) < 3600);
+$_SESSION['wishlist_attempts'] = array_filter($_SESSION['wishlist_attempts'], fn($timestamp) => ($now - $timestamp) < 3600);
 $max_attempts = 50;
 
 // Handle adding products to cart
@@ -404,11 +430,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 $_SESSION['error'] = $texts['error_message'];
             }
         } catch (PDOException $e) {
-            error_log('添加购物车失败：' . $e->getMessage(), 3, 'C:/wamp64/logs/php_error.log');
+            error_log('Add to cart failed: ' . $e->getMessage(), 3, 'C:/wamp64/logs/php_error.log');
             $_SESSION['error'] = $texts['error_message'];
         }
     } else {
-        error_log('PDO 未定义或为 null 无法添加购物车', 3, 'C:/wamp64/logs/php_error.log');
+        error_log('PDO is undefined or null for cart addition', 3, 'C:/wamp64/logs/php_error.log');
         $_SESSION['error'] = $texts['db_error'];
     }
 }
@@ -455,11 +481,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && in_array
                 $_SESSION['error'] = $texts['error_message'];
             }
         } catch (PDOException $e) {
-            error_log('愿望清单操作失败：' . $e->getMessage(), 3, 'C:/wamp64/logs/php_error.log');
+            error_log('Wishlist operation failed: ' . $e->getMessage(), 3, 'C:/wamp64/logs/php_error.log');
             $_SESSION['error'] = $texts['error_message'];
         }
     } else {
-        error_log('PDO 未定义或为 null 无法操作愿望清单', 3, 'C:/wamp64/logs/php_error.log');
+        error_log('PDO is undefined or null for wishlist operation', 3, 'C:/wamp64/logs/php_error.log');
         $_SESSION['error'] = $texts['db_error'];
     }
 }
@@ -497,11 +523,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 $_SESSION['error'] = $texts['error_message'];
             }
         } catch (PDOException $e) {
-            error_log('评论提交失败：' . $e->getMessage(), 3, 'C:/wamp64/logs/php_error.log');
+            error_log('Review submission failed: ' . $e->getMessage(), 3, 'C:/wamp64/logs/php_error.log');
             $_SESSION['error'] = $texts['error_message'];
         }
     } else {
-        error_log('PDO 未定义或为 null 无法提交评论', 3, 'C:/wamp64/logs/php_error.log');
+        error_log('PDO is undefined or null for review submission', 3, 'C:/wamp64/logs/php_error.log');
         $_SESSION['error'] = $texts['db_error'];
     }
 }
@@ -896,7 +922,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             box-shadow: 0 0 0 2px var(--accent-blue);
             outline: none;
         }
-        /* 商品列表区块标题和表头美化 */
         .shop-section-title {
             font-family: 'Playfair Display', serif;
             font-size: 2rem;
@@ -1104,10 +1129,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                                         <img src="<?php echo htmlspecialchars((string)$image_path); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($product['alt_' . $lang] ?? ''); ?>">
                                     <?php endif; ?>
                                     <div class="card-body">
-                                        <h5 class="card-title"><?php echo htmlspecialchars($product['name_' . $lang]); ?></h5>
+                                        <h5 class="card-title"><?php echo htmlspecialchars($product['name_' . $lang] ?? $product['name_zh'] ?? $product['name_en'] ?? $product['name_ms'] ?? 'Unnamed Product'); ?></h5>
                                         <p class="card-text"><?php echo htmlspecialchars($product['description_' . $lang] ?? ''); ?></p>
                                         <?php
-                                        $final_price = $product['price_' . $lang];
+                                        $final_price = $product['price_' . $lang] ?? $product['price_zh'] ?? $product['price_en'] ?? $product['price_ms'] ?? 0;
                                         ?>
                                         <p class="card-text price"><?php echo $lang === 'zh' ? '¥' : ($lang === 'en' ? '$' : 'RM'); ?><?php echo number_format($final_price, 2); ?></p>
                                         <p class="stock-status <?php echo $product['stock'] > 0 ? 'available' : 'out-of-stock'; ?>">
@@ -1248,7 +1273,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                         window.location.reload();
                     }
                 })
-                .catch(error => console.error('语言切换失败：', error));
+                .catch(error => console.error('语言切换错误：', error));
             });
         }
 
@@ -1265,9 +1290,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             });
         });
 
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelector('.spinner-border').style.display = 'none';
-        });
+        // Hide spinner on page load
+        document.querySelector('.spinner-border').style.display = 'none';
     });
     </script>
 </body>
