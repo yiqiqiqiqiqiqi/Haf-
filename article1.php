@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// Default language set to Chinese
 if (!isset($_SESSION['lang'])) {
     $_SESSION['lang'] = 'zh';
 }

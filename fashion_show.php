@@ -1,7 +1,6 @@
     <?php
     session_start();
 
-    // Default language set to Chinese
     if (!isset($_SESSION['lang'])) {
         $_SESSION['lang'] = 'zh';
     }
@@ -15,7 +14,6 @@
     $current_lang = $_SESSION['lang'];
     $site_dir = $current_lang === 'ar' ? 'rtl' : 'ltr';
 
-    // Translation array limited to English and Chinese
     $translations = [
         'en' => [
             'meta_description' => 'Experience the glamour of fashion shows with HAF, showcasing the latest runway looks',
